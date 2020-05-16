@@ -1,5 +1,5 @@
 # RxUtilities
-##This library is created to fulfil my daily needs with common features like location, permission, debug mode logging etc and many more will be added in the future.
+## It includes reactive location feature using RxJava and RxAndroid, very easy to use. More features will be added soon such as running location service in foreground when needed as well simple service to get desired result
 
 I will add some usage sample very soon.
 
@@ -19,3 +19,11 @@ I will add some usage sample very soon.
     dependencies {
               implementation 'com.github.easedroid:RxUtilities:Tag'
     }
+    
+ -to compile with above library you need to add RxAndroid into your project
+ 
+    dependencies {
+               implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+               implementation 'io.reactivex.rxjava2:rxjava:2.2.19'  
+     }
+    
