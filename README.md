@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/easedroid/RxUtilities.svg)](https://jitpack.io/#easedroid/RxUtilities)
 # RxUtilities
 ## It includes reactive location feature using RxJava and RxAndroid, very easy to use. More features will be added soon such as running location service in foreground when needed as well simple service to get desired result
 
