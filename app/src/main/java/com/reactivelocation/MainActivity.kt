@@ -49,17 +49,18 @@ class MainActivity : AppCompatActivity() {
 
 
         RxHelper.init(this).showToast("Showing message here")
+        loc.getLocationStream()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({location ->
+                RxHelper.print(location.toString())
+            }, {error ->
+                error.printStackTrace()
+            })
 
         RxHelper.init(this).askPermission(Pair(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), object : PermissionCallback {
             override fun onGranted() {
-                loc.getCurrentLocation()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({location ->
-                        RxHelper.print(location.toString())
-                    }, {error ->
-                        error.printStackTrace()
-                    })
+
             }
 
             override fun onDenied() {

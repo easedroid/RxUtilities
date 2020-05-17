@@ -1,6 +1,8 @@
 package com.rxlocations
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
@@ -54,7 +56,9 @@ class RxHelper {
 
     fun askPermission(pair: Pair<String, String>, callback: PermissionCallback) {
         permissionCallback = callback
-        methodWithPermissions(pair)
+        Handler(Looper.getMainLooper()).post {
+            methodWithPermissions(pair)
+        }
     }
 
     fun methodWithPermissions(pair: Pair<String, String>) = weakRef!!.get().runWithPermissions(pair.first, pair.second, options = quickPermissionsOption){

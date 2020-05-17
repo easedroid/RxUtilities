@@ -42,37 +42,36 @@ class RxLocations{
             locationRequest.fastestInterval = fastestInterval.toLong()
             locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
 
-            LocationServices.getFusedLocationProviderClient(weakRef?.get()!!)
-                .requestLocationUpdates(locationRequest, object : LocationCallback(){
-                    override fun onLocationResult(locationResult: LocationResult?) {
-                        super.onLocationResult(locationResult)
-                        LocationServices.getFusedLocationProviderClient(weakRef!!.get()!!)
-                            .removeLocationUpdates(this)
-                        if (locationRequest!=null && locationResult?.locations?.size!!>0){
-                            val lastIndex = locationResult.locations.size - 1
-                            val latitude = locationResult.locations[lastIndex].latitude
-                            val longitude = locationResult.locations[lastIndex].longitude
-                            Timber.e("Location : $latitude. $longitude")
-                            emitter.onNext(locationResult.locations[lastIndex])
-                            emitter.onComplete()
-                        }
 
-                    }
-
-                    override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
-                        super.onLocationAvailability(locationAvailability)
-                    }
-                }, Looper.getMainLooper())
-
-            /*RxHelper.init(weakRef!!.get()!! as Activity).askPermission(Pair(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), object :PermissionCallback{
+            RxHelper.init(contex!!).askPermission(Pair(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), object :PermissionCallback{
                 override fun onGranted() {
+                    LocationServices.getFusedLocationProviderClient(weakRef?.get()!!)
+                        .requestLocationUpdates(locationRequest, object : LocationCallback(){
+                            override fun onLocationResult(locationResult: LocationResult?) {
+                                super.onLocationResult(locationResult)
+                                LocationServices.getFusedLocationProviderClient(weakRef!!.get()!!)
+                                    .removeLocationUpdates(this)
+                                if (locationRequest!=null && locationResult?.locations?.size!!>0){
+                                    val lastIndex = locationResult.locations.size - 1
+                                    val latitude = locationResult.locations[lastIndex].latitude
+                                    val longitude = locationResult.locations[lastIndex].longitude
+                                    Timber.e("Location : $latitude. $longitude")
+                                    emitter.onNext(locationResult.locations[lastIndex])
+                                    emitter.onComplete()
+                                }
 
+                            }
+
+                            override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
+                                super.onLocationAvailability(locationAvailability)
+                            }
+                        }, Looper.getMainLooper())
                 }
 
                 override fun onDenied() {
                     emitter.onError(Throwable("Permission denied!!!"))
                 }
-            })*/
+            })
         }
     }
 
@@ -83,28 +82,36 @@ class RxLocations{
             locationRequest.interval = interval.toLong()
             locationRequest.fastestInterval = fastestInterval.toLong()
             locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            RxHelper.init(contex!!).askPermission(Pair(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION), object :PermissionCallback {
+                override fun onGranted() {
+                    LocationServices.getFusedLocationProviderClient(weakRef?.get()!!)
+                        .requestLocationUpdates(locationRequest,
+                            object : LocationCallback() {
+                                override fun onLocationResult(locationResult: LocationResult?) {
+                                    super.onLocationResult(locationResult)
+                                    /*LocationServices.getFusedLocationProviderClient(weakRef!!.get()!!)
+                                        .removeLocationUpdates(this)*/
+                                    if (locationRequest != null && locationResult?.locations?.size!! > 0) {
+                                        val lastIndex = locationResult.locations.size - 1
+                                        val latitude = locationResult.locations[lastIndex].latitude
+                                        val longitude = locationResult.locations[lastIndex].longitude
+                                        //Timber.e("Location : $latitude. $longitude")
+                                        emitter.onNext(locationResult.locations[lastIndex])
+                                        //emitter.onComplete()
+                                    }
 
-            LocationServices.getFusedLocationProviderClient(weakRef?.get()!!)
-                .requestLocationUpdates(locationRequest, object : LocationCallback(){
-                    override fun onLocationResult(locationResult: LocationResult?) {
-                        super.onLocationResult(locationResult)
-                        /*LocationServices.getFusedLocationProviderClient(weakRef!!.get()!!)
-                            .removeLocationUpdates(this)*/
-                        if (locationRequest!=null && locationResult?.locations?.size!!>0){
-                            val lastIndex = locationResult.locations.size - 1
-                            val latitude = locationResult.locations[lastIndex].latitude
-                            val longitude = locationResult.locations[lastIndex].longitude
-                            //Timber.e("Location : $latitude. $longitude")
-                            emitter.onNext(locationResult.locations[lastIndex])
-                            //emitter.onComplete()
-                        }
+                                }
 
-                    }
+                                override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
+                                    super.onLocationAvailability(locationAvailability)
+                                }
+                            }, Looper.getMainLooper())
+                }
 
-                    override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
-                        super.onLocationAvailability(locationAvailability)
-                    }
-                }, Looper.getMainLooper())
+                override fun onDenied() {
+                    emitter.onError(Throwable("Denied permission!"))
+                }
+            })
         }
     }
 
