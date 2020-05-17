@@ -20,7 +20,7 @@ I will add some usage sample very soon.
  -and add this below line in the app level build.gradle file
  
     dependencies {
-              implementation 'com.github.easedroid:RxUtilities:Tag'
+              implementation 'com.github.easedroid:RxUtilities:CURRENT_VERSION'
     }
     
  -to compile with above library you need to add RxAndroid into your project
