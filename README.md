@@ -32,39 +32,40 @@ I will add some usage sample very soon.
      }
      
  -Usage samples
-  -First in application class onCreate add below lines
-           
-            RxHelper.init(applicationContext).initializeTimber()
-            RxLocations.init(applicationContext)   
-  -In Activity or Fragment you need to add below code in the onCreate
-            
-            RxLocations.init(this)
-                        .getLocationStream()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({location ->
+ 
+      -First in application class onCreate add below lines
+               
+                RxHelper.init(applicationContext).initializeTimber()
+                RxLocations.init(applicationContext)   
+      -In Activity or Fragment you need to add below code in the onCreate
+                
+                RxLocations.init(this)
+                            .getLocationStream()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({location ->
+                                // Here is your location
+                            }, {error ->
+                                error.printStackTrace()
+                            })                       
+      -Or if you want to modify location call you can use below code
+      
+                val builder = RxLocations.Builder()
+                        val loc = builder.with(this)
+                                        .requestRuntimePermission(true)
+                                        .setFastestInterval(3000)
+                                        .setInterval(8000)
+                                        .build()  
+                
+                loc.getLocationStream()
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({location ->
                             // Here is your location
-                        }, {error ->
-                            error.printStackTrace()
-                        })                       
-  -Or if you want to modify location call you can use below code
-  
-            val builder = RxLocations.Builder()
-                    val loc = builder.with(this)
-                                    .requestRuntimePermission(true)
-                                    .setFastestInterval(3000)
-                                    .setInterval(8000)
-                                    .build()  
-            
-            loc.getLocationStream()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({location ->
-                        // Here is your location
-                            RxHelper.print(location.toString())
-                        }, {error ->
-                            error.printStackTrace()
-                        })                                            
+                                RxHelper.print(location.toString())
+                            }, {error ->
+                                error.printStackTrace()
+                            })                                            
             
              
      
