@@ -7,6 +7,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Looper
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.location.*
 import io.reactivex.Observable
@@ -65,7 +66,7 @@ class RxLocations{
                             override fun onLocationAvailability(locationAvailability: LocationAvailability?) {
                                 super.onLocationAvailability(locationAvailability)
                             }
-                        }, Looper.getMainLooper())
+                        }, Handler(Looper.getMainLooper()))
                 }
 
                 override fun onDenied() {
